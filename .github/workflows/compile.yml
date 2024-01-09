@@ -43,6 +43,7 @@ jobs:
           sudo apt install -y protobuf-compiler
           go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
           pip install nanopb
+          pip install setuptools
       - name: Compile Protobuf
         run: yab proto
       - name: Commit changes
