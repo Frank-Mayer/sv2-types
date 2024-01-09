@@ -6,8 +6,8 @@ if not go_dir then
 end
 local cpp_dir, _ = pcall(Yab.fileinfo, "cpp")
 if not cpp_dir then
-    print("Creating cpp folder")
-    os.execute("mkdir cpp")
+	print("Creating cpp folder")
+	os.execute("mkdir cpp")
 end
 
 -- remove old generated files (go, cc, h)
@@ -21,10 +21,23 @@ for _, old_file in ipairs(old_files) do
 	print("Removing old file: " .. old_file)
 	os.remove(old_file)
 end
+old_files = Yab.find(".", "**.pb.c")
+for _, old_file in ipairs(old_files) do
+	print("Removing old file: " .. old_file)
+	os.remove(old_file)
+end
 old_files = Yab.find(".", "**.pb.h")
 for _, old_file in ipairs(old_files) do
 	print("Removing old file: " .. old_file)
 	os.remove(old_file)
+end
+
+local function which(program)
+	if Yab.os_type() == "windows" then
+		return Yab.stdout("where " .. program)
+	else
+		return Yab.stdout("which " .. program)
+	end
 end
 
 -- compile proto files
@@ -32,5 +45,10 @@ local proto_files = Yab.find(".", "**.proto")
 for _, proto_file in ipairs(proto_files) do
 	print("Compiling proto file: " .. proto_file)
 	os.execute("protoc --go_out=go --go_opt=paths=source_relative " .. proto_file)
-	os.execute("protoc --cpp_out=cpp " .. proto_file)
+	os.execute(
+		"protoc --plugin=protoc-gen-nanopb="
+			.. which("protoc-gen-nanopb")
+			.. " --nanopb_out=cpp "
+			.. proto_file
+	)
 end
