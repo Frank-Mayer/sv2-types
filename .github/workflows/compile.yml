@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - "**.proto"
+      - ".github/workflows/compile.yml"
+
+  workflow_dispatch:
+
+jobs:
+  compile:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.PAT }}
+      - name: Configure git
+        run: |
+          git config user.name Frank-Mayer
+          git config user.email gh@frankmayer.dev
+          git config user.password ${{ secrets.PAT }}
+      - name: Setup Yab
+        uses: Frank-Mayer/yab-setup@v1.0.0
+      - name: Setup Go environment
+        uses: actions/setup-go@v4.1.0
+        with:
+          go-version: ">=1.21.5"
+          cache: false
+          architecture: x64
+      - name: Install Protobuf
+        run: |
+          sudo apt install -y protobuf-compiler
+          go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
+      - name: Compile Protobuf
+        run: yab proto
+      - name: Commit changes
+        run: |
+            git add ./cpp/
+            git add ./go/
+            git commit -m "Compile Protobuf: $(date)"
+            git push

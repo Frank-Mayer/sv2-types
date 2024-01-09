@@ -1,0 +1,11 @@
+// ESP32 attached sensors
+
+syntax = "proto3";
+
+option go_package = "github.com/Frank-Mayer/sv2-types";
+
+message SensorData {
+    float value = 1;
+    string name = 2;
+    string unit = 3;
+}

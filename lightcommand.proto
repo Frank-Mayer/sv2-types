@@ -1,0 +1,9 @@
+// Control the light (on/off)
+
+syntax = "proto3";
+
+option go_package = "github.com/Frank-Mayer/sv2-types";
+
+message LightControl {
+    bool on = 1;
+}
