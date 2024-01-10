@@ -1,11 +1,14 @@
-// ESP32 attached sensors
 
 syntax = "proto3";
 
 option go_package = "github.com/Frank-Mayer/sv2-types";
 
+// ESP32 attached sensor data
 message SensorData {
+    // value of the sensor
     float value = 1;
+    // name of the sensor (e.g. "temperature", "humidity", "wind speed")
     string name = 2;
+    // unit of measurement (e.g. "°C", "ppm", "m/s")
     string unit = 3;
 }
