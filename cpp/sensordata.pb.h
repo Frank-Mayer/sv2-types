@@ -13,7 +13,7 @@
 /* ESP32 attached sensor data */
 typedef struct _SensorData {
     /* value of the sensor */
-    float value;
+    pb_callback_t value;
     /* name of the sensor (e.g. "temperature", "humidity", "wind speed") */
     pb_callback_t name;
     /* unit of measurement (e.g. "°C", "ppm", "m/s") */
@@ -26,8 +26,8 @@ extern "C" {
 #endif
 
 /* Initializer values for message structs */
-#define SensorData_init_default                  {0, {{NULL}, NULL}, {{NULL}, NULL}}
-#define SensorData_init_zero                     {0, {{NULL}, NULL}, {{NULL}, NULL}}
+#define SensorData_init_default                  {{{NULL}, NULL}, {{NULL}, NULL}, {{NULL}, NULL}}
+#define SensorData_init_zero                     {{{NULL}, NULL}, {{NULL}, NULL}, {{NULL}, NULL}}
 
 /* Field tags (for use in manual encoding/decoding) */
 #define SensorData_value_tag                     1
@@ -36,7 +36,7 @@ extern "C" {
 
 /* Struct field encoding specification for nanopb */
 #define SensorData_FIELDLIST(X, a) \
-X(a, STATIC,   SINGULAR, FLOAT,    value,             1) \
+X(a, CALLBACK, SINGULAR, STRING,   value,             1) \
 X(a, CALLBACK, SINGULAR, STRING,   name,              2) \
 X(a, CALLBACK, SINGULAR, STRING,   unit,              3)
 #define SensorData_CALLBACK pb_default_field_callback
