@@ -30,7 +30,7 @@ jobs:
             run: |
               git config --global user.email "actions@github.com"
               git config --global user.name "GitHub Actions"
-              tagname="$(date +%s)"
+              tagname="v1.0.$(date +%s)"
               git tag -a $tagname -m "Release $tagname"
               git push origin $tagname
               curl -L \
