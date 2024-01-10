@@ -10,9 +10,13 @@
 #endif
 
 /* Struct definitions */
+/* ESP32 attached sensor data */
 typedef struct _SensorData {
+    /* value of the sensor */
     float value;
+    /* name of the sensor (e.g. "temperature", "humidity", "wind speed") */
     pb_callback_t name;
+    /* unit of measurement (e.g. "°C", "ppm", "m/s") */
     pb_callback_t unit;
 } SensorData;
 

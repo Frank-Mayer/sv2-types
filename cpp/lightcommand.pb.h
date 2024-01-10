@@ -10,7 +10,9 @@
 #endif
 
 /* Struct definitions */
+/* Control the light (on/off) */
 typedef struct _LightControl {
+    /* whether the light should be on or off */
     bool on;
 } LightControl;
 
